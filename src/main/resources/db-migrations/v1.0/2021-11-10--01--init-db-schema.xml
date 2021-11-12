@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet id="2021-11-10--01--init-db-schema.xml" author="Pavel Kalinchuk">
+        <createTable tableName="address">
+            <column name="id" type="uuid" defaultValueComputed="${uuid_function}">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="longtitude" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="latitude" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address_view" type="java.lang.string">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="rta">
+            <column name="id" type="uuid" defaultValueComputed="${uuid_function}">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="number_of_rta" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="number_of_car" type="java.lang.String">
+                <constraints nullable="false"/>
+            </column>
+            <column name="serial_license" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="number_license" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="time_of_accident" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="guilty" type="boolean">
+                <constraints nullable="true"/>
+            </column>
+            <column name="penalty" type="double">
+                <constraints nullable="true"/>
+            </column>
+            <column name="address_id" type="uuid">
+                <constraints nullable="false" foreignKeyName="address_id" references="address(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
