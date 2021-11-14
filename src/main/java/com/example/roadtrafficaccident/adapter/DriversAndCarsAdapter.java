@@ -79,7 +79,10 @@ public class DriversAndCarsAdapter {
 
     public DriverDTO getDriversIdByNumberOfCar(String numberOfCar) {
 
-        String uri = UriComponentsBuilder.fromUriString("http://localhost:42100/driversandcars/driverid/").path("/{numberOfCar}")
+//        String uri = UriComponentsBuilder.fromUriString("http://localhost:42100/driversandcars/driverid/").path("/{numberOfCar}")
+//                .buildAndExpand(numberOfCar).toUriString();
+
+        String uri = UriComponentsBuilder.fromUriString("http://https://driversandcars.herokuapp.com/driversandcars/driverid/").path("/{numberOfCar}")
                 .buildAndExpand(numberOfCar).toUriString();
 
         ResponseEntity<DriverDTO> driverDTOResponseEntity = restTemplate.exchange(uri,
