@@ -17,3 +17,4 @@ server:
 internal:
   api:
     key: "aedfb626-b8f1-409a-8362-374afcaceb5f"
+    driversandcars-url: ${DRIVERS_AND_CARS_SERVICE_URL:"https://driversandcars.herokuapp.com/driversandcars/driverid/"}

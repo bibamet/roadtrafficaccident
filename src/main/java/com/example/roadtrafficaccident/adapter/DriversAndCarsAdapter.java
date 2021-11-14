@@ -31,6 +31,9 @@ public class DriversAndCarsAdapter {
     @Value("${internal.api.key}")
     private String apiKey;
 
+    @Value("${internal.api.driversandcars-url}")
+    private String driverAndCarsUrl;
+
     public Map<String, String> getCoordsFromArea(String area) {
 
         String uri = UriComponentsBuilder.fromUriString("https://geocode-maps.yandex.ru/1.x/")
@@ -82,7 +85,7 @@ public class DriversAndCarsAdapter {
 //        String uri = UriComponentsBuilder.fromUriString("http://localhost:42100/driversandcars/driverid/").path("/{numberOfCar}")
 //                .buildAndExpand(numberOfCar).toUriString();
 
-        String uri = UriComponentsBuilder.fromUriString("http://https://driversandcars.herokuapp.com/driversandcars/driverid/").path("/{numberOfCar}")
+        String uri = UriComponentsBuilder.fromUriString(driverAndCarsUrl).path("/{numberOfCar}")
                 .buildAndExpand(numberOfCar).toUriString();
 
         ResponseEntity<DriverDTO> driverDTOResponseEntity = restTemplate.exchange(uri,

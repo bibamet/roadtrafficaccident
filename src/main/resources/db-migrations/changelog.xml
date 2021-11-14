@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
 
-    <property name="uuid_function" value="uuid_generate_v4()" dbms="postgresql"/>
+    <property name="uuid_function" value="public.uuid_generate_v4()" dbms="postgresql"/>
     <include file="v1.0/2021-11-10--01--init-db-schema.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

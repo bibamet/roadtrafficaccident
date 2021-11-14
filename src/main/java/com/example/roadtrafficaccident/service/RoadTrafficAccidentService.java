@@ -72,10 +72,8 @@ public class RoadTrafficAccidentService {
             , String numberOfCar
             , AddressDto address) {
 
-        Optional<RTAEntity> rtaEntityFinded = Optional.ofNullable(rtaRepo.getByNumberOfCarAndNumberOfRta(numberOfCar, numberOfRTA)
-                .orElseThrow(() -> new RTAEntityNotFoundException(numberOfRTA, numberOfCar)));
-
-        RTAEntity rtaEntity = rtaEntityFinded.get();
+        RTAEntity rtaEntity = rtaRepo.getByNumberOfCarAndNumberOfRta(numberOfCar, numberOfRTA)
+                .orElseThrow(() -> new RTAEntityNotFoundException(numberOfRTA, numberOfCar));
 
         Optional<AddressEntity> addressOptional = addressRepo.findByLongtitudeAndLatitude(address.getLongtitude(), address.getLatitude());
 
@@ -98,9 +96,8 @@ public class RoadTrafficAccidentService {
     public RtaDto updateNumCar(Long numberOfRTA,
             String oldCarNumber, String newCarNumber) {
 
-        Optional<RTAEntity> rtaEntityFinded = Optional.ofNullable(rtaRepo.getByNumberOfCarAndNumberOfRta(oldCarNumber, numberOfRTA)
-                .orElseThrow(() -> new RTAEntityNotFoundException(numberOfRTA, oldCarNumber)));
-        RTAEntity rtaEntity = rtaEntityFinded.get();
+        RTAEntity rtaEntity = rtaRepo.getByNumberOfCarAndNumberOfRta(oldCarNumber, numberOfRTA)
+                .orElseThrow(() -> new RTAEntityNotFoundException(numberOfRTA, oldCarNumber));
 
         // обработать ситуацию, если не найден такой водитель
         DriverDTO driverDTO = driversAndCarsAdapter.getDriversIdByNumberOfCar(newCarNumber);
@@ -126,7 +123,7 @@ public class RoadTrafficAccidentService {
 
         List<RTAEntity> rtaEntitiesSaved = rtaRepo.saveAll(rtaEntities);
 
-        return rtaEntitiesSaved.stream().map((rta) -> rtaMapper.toRtaDto(rta)).collect(Collectors.toList());
+        return rtaEntitiesSaved.stream().map(rtaMapper::toRtaDto).collect(Collectors.toList());
 
     }
 
@@ -134,7 +131,7 @@ public class RoadTrafficAccidentService {
 
         List<RTAEntity> rtaEntities = rtaRepo.findByNumberOfCarAndTimeOfAccidentBetweenOrderById(numberOfCar, from, to);
 
-        return rtaEntities.stream().map((rta) -> rtaMapper.toRtaDto(rta)).collect(Collectors.toList());
+        return rtaEntities.stream().map(rtaMapper::toRtaDto).collect(Collectors.toList());
 
     }
 
@@ -164,10 +161,8 @@ public class RoadTrafficAccidentService {
 
     public RtaDto setGuiltyAndPenalty(Long numrta, String numcar, boolean guilty, Double penalty) {
 
-        Optional<RTAEntity> rtaEntityOptional = Optional.ofNullable(rtaRepo.getByNumberOfCarAndNumberOfRta(numcar, numrta)
-                .orElseThrow(() -> new RTAEntityNotFoundException(numrta, numcar)));
-
-        RTAEntity rtaEntity = rtaEntityOptional.get();
+        RTAEntity rtaEntity = rtaRepo.getByNumberOfCarAndNumberOfRta(numcar, numrta)
+                .orElseThrow(() -> new RTAEntityNotFoundException(numrta, numcar));
 
         rtaEntity.setGuilty(guilty);
 
