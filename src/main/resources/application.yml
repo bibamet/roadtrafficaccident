@@ -1,19 +1,15 @@
 spring:
   datasource:
-    url: "jdbc:postgresql://localhost:5432/postgres?currentSchema=rtaliqui"
-    username: rtauser
-    password: 123
+    url: "jdbc:postgres://ec2-34-250-19-18.eu-west-1.compute.amazonaws.com:5432/dfc99t0fp1kmnt"
+    username: zstcgnjtwppeyk
+    password: f3f9be95f3b68bfc6dae4ae1877fa8a578efc2f030c71d673a48b835ce5a677c
+    driver-class-name: org.postgresql.Driver
   liquibase:
-    change-log: "classpath:db-migrations/changelog.xml"
-    user: rtauser
-    password: 123
+    user: zstcgnjtwppeyk
+    password: f3f9be95f3b68bfc6dae4ae1877fa8a578efc2f030c71d673a48b835ce5a677c
+    change-log: 'classpath:db-migrations/changelog.xml'
+    driver-class-name: org.postgresql.Driver
   jpa:
-#    hibernate:
-#      ddl-auto: update
+    hibernate:
+      ddl-auto: update
     show-sql: true
-server:
-  port: 54300
-
-internal:
-  api:
-    key: "aedfb626-b8f1-409a-8362-374afcaceb5f"

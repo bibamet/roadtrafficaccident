@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/postgres?currentSchema=rtaliqui"
+    username: rtauser
+    password: 123
+  liquibase:
+    change-log: "classpath:db-migrations/changelog.xml"
+    user: rtauser
+    password: 123
+  jpa:
+#    hibernate:
+#      ddl-auto: update
+    show-sql: true
+server:
+  port: 54300
+
+internal:
+  api:
+    key: "aedfb626-b8f1-409a-8362-374afcaceb5f"
