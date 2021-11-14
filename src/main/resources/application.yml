@@ -13,3 +13,6 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+internal:
+  api:
+    key: "aedfb626-b8f1-409a-8362-374afcaceb5f"
