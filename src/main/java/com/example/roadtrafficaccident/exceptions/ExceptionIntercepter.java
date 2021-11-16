@@ -1,4 +1,4 @@
-package com.example.roadtrafficaccident.controlleradvice;
+package com.example.roadtrafficaccident.exceptions;
 
 import com.example.roadtrafficaccident.exceptionbody.ApiError;
 import com.example.roadtrafficaccident.exceptionbody.ApiErrorType;

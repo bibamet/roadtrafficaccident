@@ -1,6 +1,7 @@
 package com.example.roadtrafficaccident.service;
 
 import com.example.roadtrafficaccident.adapter.DriversAndCarsAdapter;
+import com.example.roadtrafficaccident.adapter.GeocoderAdapter;
 import com.example.roadtrafficaccident.data.AddressRepo;
 import com.example.roadtrafficaccident.data.RTARepo;
 import com.example.roadtrafficaccident.dto.CreatingRtaDto;
@@ -31,13 +32,14 @@ public class RoadTrafficAccidentService {
     private final RTARepo rtaRepo;
     private final AddressRepo addressRepo;
     private final DriversAndCarsAdapter driversAndCarsAdapter;
+    private final GeocoderAdapter geocoderAdapter;
     private final RtaMapper rtaMapper;
     private final AddressMapper addressMapper;
 
     private AddressEntity getAddressEntity(Optional<AddressEntity> addressOptional, AddressEntity address) {
 
         if (addressOptional.isEmpty()) {
-            address.setAddressView(driversAndCarsAdapter.getAddress(address.getLongtitude(), address.getLatitude()));
+            address.setAddressView(geocoderAdapter.getAddress(address.getLongtitude(), address.getLatitude()));
         } else {
             address = addressOptional.get();
         }
@@ -141,7 +143,7 @@ public class RoadTrafficAccidentService {
 
     public Double getRtaFromArea(String area, LocalDateTime from, LocalDateTime to, long ageCount) {
 
-        Map<String, String> findedArea = driversAndCarsAdapter.getCoordsFromArea(area);
+        Map<String, String> findedArea = geocoderAdapter.getCoordsFromArea(area);
 
         List<AddressEntity> addressEntities = addressRepo.findByLongtitudeGreaterThanEqualAndLongtitudeLessThanEqualAndLatitudeGreaterThanEqualAndLatitudeLessThanEqual(
                 Double.valueOf(findedArea.get("lowerLongtitude")),
