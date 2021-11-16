@@ -12,9 +12,9 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
 public interface RtaMapper {
 
-    RTAEntity toRTAEntity(CreatingRtaDto addresAndRTADTO);
+    RTAEntity toRTAEntity(RtaDto addresAndRTADTO);
 
-    @Mapping(source = "address.addressView", target = "address")
+//    @Mapping(source = "address.addressView", target = "address")
     RtaDto toRtaDto(RTAEntity rtaEntity);
 
     void updateRTAEntity(DriverDTO source, @MappingTarget RTAEntity target);

@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,7 +34,19 @@ public class RoadTrafficAccidentService {
     private final RtaMapper rtaMapper;
     private final AddressMapper addressMapper;
 
-    public RtaDto addNewRTA(CreatingRtaDto rtaInfo) {
+    private AddressEntity getAddressEntity(Optional<AddressEntity> addressOptional, AddressEntity address) {
+
+        if (addressOptional.isEmpty()) {
+            address.setAddressView(driversAndCarsAdapter.getAddress(address.getLongtitude(), address.getLatitude()));
+        } else {
+            address = addressOptional.get();
+        }
+
+        return address;
+
+    }
+
+    public RtaDto addNewRTA(RtaDto rtaInfo) {
 
         // проверить, если указанный адрес в бд, если нет, то дернуть яндекс по координатам и сформировать представление адреса
 
@@ -43,12 +56,7 @@ public class RoadTrafficAccidentService {
 
         Optional<AddressEntity> addressFind = addressRepo.findOne(example);
 
-        if (addressFind.isEmpty()) {
-            address.setAddressView(driversAndCarsAdapter.getAddress(address.getLongtitude(), address.getLatitude()));
-            address = addressRepo.save(address);
-        } else {
-            address = addressFind.get();
-        }
+        address = getAddressEntity(addressFind, address);
 
         // может не найти такого водителя, тогда мы пробрасываем соответствующее исключение
         DriverDTO driverDTO = driversAndCarsAdapter.getDriversIdByNumberOfCar(rtaInfo.getNumberOfCar());
@@ -56,6 +64,7 @@ public class RoadTrafficAccidentService {
         RTAEntity rtaEntity = rtaMapper.toRTAEntity(rtaInfo);
 
         rtaMapper.updateRTAEntity(driverDTO, rtaEntity);
+        rtaEntity.setNumberOfCar(rtaInfo.getNumberOfCar());
 
         rtaEntity.setAddress(address);
 
@@ -75,17 +84,12 @@ public class RoadTrafficAccidentService {
         RTAEntity rtaEntity = rtaRepo.getByNumberOfCarAndNumberOfRta(numberOfCar, numberOfRTA)
                 .orElseThrow(() -> new RTAEntityNotFoundException(numberOfRTA, numberOfCar));
 
+        AddressEntity addressEntityDto = addressMapper.toAddressEntity(address);
+
         Optional<AddressEntity> addressOptional = addressRepo.findByLongtitudeAndLatitude(address.getLongtitude(), address.getLatitude());
 
-        if (addressOptional.isEmpty()) {
-
-            AddressEntity addressEntity = addressMapper.toAddressEntity(address);
-            addressEntity.setAddressView(driversAndCarsAdapter.getAddress(addressEntity.getLongtitude(), addressEntity.getLatitude()));
-            rtaEntity.setAddress(addressEntity);
-
-        } else {
-            rtaEntity.setAddress(addressOptional.get());
-        }
+        addressEntityDto = getAddressEntity(addressOptional, addressEntityDto);
+        rtaEntity.setAddress(addressEntityDto);
 
         // пробросить исключение при ошибке записи в БД
         RTAEntity savedRta = rtaRepo.save(rtaEntity);
