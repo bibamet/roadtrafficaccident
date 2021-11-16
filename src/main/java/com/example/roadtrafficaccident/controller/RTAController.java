@@ -73,6 +73,7 @@ public class RTAController {
 
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/car")
     public List<RtaDto> getRtaByCar(@Valid @RequestBody GettingRtaByCar gettingRtaByCar) {
 

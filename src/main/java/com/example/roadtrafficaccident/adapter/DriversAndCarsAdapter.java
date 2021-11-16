@@ -32,12 +32,15 @@ public class DriversAndCarsAdapter {
     @Value("${internal.api.key}")
     private String apiKey;
 
+    @Value("${internal.api.geocoder-url}")
+    private String geocoderUrl;
+
     @Value("${internal.api.driversandcars-url}")
     private String driverAndCarsUrl;
 
     public Map<String, String> getCoordsFromArea(String area) {
 
-        String uri = UriComponentsBuilder.fromUriString("https://geocode-maps.yandex.ru/1.x/")
+        String uri = UriComponentsBuilder.fromUriString(geocoderUrl)
                 .queryParam("apikey", apiKey)
                 .queryParam("results", 1)
                 .queryParam("format", "json")

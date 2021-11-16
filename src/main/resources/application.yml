@@ -16,4 +16,5 @@ spring:
 internal:
   api:
     key: ${KEY}
+    geocoder-url: ${GEOCODER_URL:"https://geocode-maps.yandex.ru/1.x/"}
     driversandcars-url: ${DRIVERS_AND_CARS_SERVICE_URL}
