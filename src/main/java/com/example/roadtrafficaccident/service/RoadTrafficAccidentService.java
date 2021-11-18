@@ -152,7 +152,6 @@ public class RoadTrafficAccidentService {
                 Double.valueOf(findedArea.get("upperLatitude"))
                 );
 
-
         int sum = 0;
 
         for (int i = 0; i < ageCount; i++) {
@@ -161,7 +160,7 @@ public class RoadTrafficAccidentService {
                     LocalDateTime.of(to.getYear() - i, to.getMonthValue(), to.getDayOfMonth(), 23, 59 ));
         }
 
-        return (double) (ageCount == 0 ? sum : sum / ageCount);
+        return (double) sum / (double) ageCount;
 
     }
 

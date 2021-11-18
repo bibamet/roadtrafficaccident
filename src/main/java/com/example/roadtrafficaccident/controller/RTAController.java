@@ -24,7 +24,7 @@ public class RTAController {
 
     private final RoadTrafficAccidentService roadTrafficAccidentService;
 
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/add")
     public RtaDto addNewRTA(@Valid @RequestBody RtaDto rtaInfo) {
 

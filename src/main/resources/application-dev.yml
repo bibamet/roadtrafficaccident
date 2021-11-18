@@ -16,6 +16,6 @@ server:
 
 internal:
   api:
-    key: ${KEY:"aedfb626-b8f1-409a-8362-374afcaceb5f"}
-    geocoder-url: ${GEOCODER_URL:"https://geocode-maps.yandex.ru/1.x/"}
-    driversandcars-url: ${DRIVERS_AND_CARS_SERVICE_URL:"https://driversandcars.herokuapp.com/driversandcars/driverid/"}
+    key: ${KEY:aedfb626-b8f1-409a-8362-374afcaceb5f}
+    geocoder-url: ${GEOCODER_URL:https://geocode-maps.yandex.ru/1.x/}
+    driversandcars-url: ${DRIVERS_AND_CARS_SERVICE_URL:https://driversandcars.herokuapp.com/driversandcars/driverid/}

@@ -22,8 +22,10 @@ public class RTAEntity {
     @GenericGenerator(name = "uuid_gen", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
+    @Column(unique = true)
     private Long numberOfRta;
 
+    @Column(unique = true)
     private String numberOfCar;
 
     private Long serial_license;

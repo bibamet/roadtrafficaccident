@@ -2,11 +2,6 @@ package com.example.roadtrafficaccident.exceptions;
 
 import com.example.roadtrafficaccident.exceptionbody.ApiError;
 import com.example.roadtrafficaccident.exceptionbody.ApiErrorType;
-import com.example.roadtrafficaccident.exceptionbody.ExceptionBody;
-import com.example.roadtrafficaccident.exceptions.AddressNotFoundException;
-import com.example.roadtrafficaccident.exceptions.AreaNotFoundException;
-import com.example.roadtrafficaccident.exceptions.RTAEntityNotFoundException;
-import com.example.roadtrafficaccident.exceptions.RTASNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +12,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.context.request.WebRequest;
-
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Objects;
@@ -27,28 +20,61 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class ExceptionIntercepter {
 
+
     @ExceptionHandler({AddressNotFoundException.class})
-    protected ResponseEntity<Object> AddressEntityNotFoundException(AddressNotFoundException ex, WebRequest request) {
-        ExceptionBody exceptionBody = new ExceptionBody("Entity not found", ex.getMessage());
-        return new ResponseEntity<>(exceptionBody, ex.isBadCoords() ? HttpStatus.BAD_REQUEST : HttpStatus.INTERNAL_SERVER_ERROR);
+    protected ResponseEntity<ApiError> AddressEntityNotFoundException(AddressNotFoundException ex) {
+
+        HttpStatus httpStatus = ex.isBadCoords() ? HttpStatus.BAD_REQUEST : HttpStatus.INTERNAL_SERVER_ERROR; // скорее всего, только NOT_FOUND отдавать
+
+        ApiError apiError = ApiError.builder()
+                .message(ex.getMessage())
+                .status(httpStatus)
+                .type(ApiErrorType.VALIDATION)
+                .build();
+        return new ResponseEntity<>(apiError, ex.isBadCoords() ? HttpStatus.BAD_REQUEST : HttpStatus.INTERNAL_SERVER_ERROR); // скорее всего, только NOT_FOUND отдавать
+
     }
 
     @ExceptionHandler({AreaNotFoundException.class})
-    protected ResponseEntity<Object> AreaNotFoundException(AreaNotFoundException ex, WebRequest request) {
-        ExceptionBody exceptionBody = new ExceptionBody("Entity not found", ex.getMessage());
-        return new ResponseEntity<>(exceptionBody, ex.isBadCoords() ? HttpStatus.BAD_REQUEST : HttpStatus.INTERNAL_SERVER_ERROR);
+    protected ResponseEntity<ApiError> AreaNotFoundException(AreaNotFoundException ex) {
+
+        HttpStatus httpStatus = ex.isBadCoords() ? HttpStatus.NOT_FOUND : HttpStatus.INTERNAL_SERVER_ERROR; // скорее всего, только NOT_FOUND отдавать
+
+        ApiError apiError = ApiError.builder()
+                .message(ex.getMessage())
+                .type(ApiErrorType.BUSINESS)
+                .status(httpStatus)
+                .build();
+        return new ResponseEntity<>(apiError, httpStatus);
     }
 
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler({RTAEntityNotFoundException.class})
-    protected ResponseEntity<Object> RTAEntityNotFoundException(RTAEntityNotFoundException ex, WebRequest request) {
-        ExceptionBody exceptionBody = new ExceptionBody("Entity not found", ex.getMessage());
-        return new ResponseEntity<>(exceptionBody, HttpStatus.NOT_FOUND);
+    protected ApiError RTAEntityNotFoundException(RTAEntityNotFoundException ex) {
+
+        ApiError apiError = ApiError.builder()
+                .message(ex.getMessage())
+                .status(HttpStatus.NOT_FOUND)
+                .type(ApiErrorType.BUSINESS)
+                .build();
+        return apiError;
+
     }
 
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler({RTASNotFoundException.class})
-    protected ResponseEntity<Object> RTASEntityNotFoundException(RTASNotFoundException ex, WebRequest request) {
-        ExceptionBody exceptionBody = new ExceptionBody("Entity not found", ex.getMessage());
-        return new ResponseEntity<>(exceptionBody, HttpStatus.NOT_FOUND);
+    protected ApiError RTASEntityNotFoundException(RTASNotFoundException ex) {
+
+        ApiError apiError = ApiError.builder()
+                .message(ex.getMessage())
+                .status(HttpStatus.NOT_FOUND)
+                .type(ApiErrorType.BUSINESS)
+                .build();
+
+        return apiError;
+
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
