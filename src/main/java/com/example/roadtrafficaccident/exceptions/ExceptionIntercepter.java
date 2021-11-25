@@ -4,7 +4,6 @@ import com.example.roadtrafficaccident.exceptionbody.ApiError;
 import com.example.roadtrafficaccident.exceptionbody.ApiErrorType;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -12,6 +11,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Objects;
@@ -21,61 +22,54 @@ import java.util.stream.Collectors;
 public class ExceptionIntercepter {
 
 
-    @ExceptionHandler({AddressNotFoundException.class})
-    protected ResponseEntity<ApiError> AddressEntityNotFoundException(AddressNotFoundException ex) {
-
-        HttpStatus httpStatus = ex.isBadCoords() ? HttpStatus.BAD_REQUEST : HttpStatus.INTERNAL_SERVER_ERROR; // скорее всего, только NOT_FOUND отдавать
-
-        ApiError apiError = ApiError.builder()
-                .message(ex.getMessage())
-                .status(httpStatus)
-                .type(ApiErrorType.VALIDATION)
-                .build();
-        return new ResponseEntity<>(apiError, ex.isBadCoords() ? HttpStatus.BAD_REQUEST : HttpStatus.INTERNAL_SERVER_ERROR); // скорее всего, только NOT_FOUND отдавать
-
-    }
-
-    @ExceptionHandler({AreaNotFoundException.class})
-    protected ResponseEntity<ApiError> AreaNotFoundException(AreaNotFoundException ex) {
-
-        HttpStatus httpStatus = ex.isBadCoords() ? HttpStatus.NOT_FOUND : HttpStatus.INTERNAL_SERVER_ERROR; // скорее всего, только NOT_FOUND отдавать
-
-        ApiError apiError = ApiError.builder()
-                .message(ex.getMessage())
-                .type(ApiErrorType.BUSINESS)
-                .status(httpStatus)
-                .build();
-        return new ResponseEntity<>(apiError, httpStatus);
-    }
-
     @ResponseBody
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler({RTAEntityNotFoundException.class})
-    protected ApiError RTAEntityNotFoundException(RTAEntityNotFoundException ex) {
-
-        ApiError apiError = ApiError.builder()
-                .message(ex.getMessage())
-                .status(HttpStatus.NOT_FOUND)
-                .type(ApiErrorType.BUSINESS)
-                .build();
-        return apiError;
-
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({EntityNotFoundException.class})
+    protected ApiError AddressNotFoundException(EntityNotFoundException ex) {
+        return wrapBusinessException(ex, HttpStatus.BAD_REQUEST);
     }
 
-    @ResponseBody
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler({RTASNotFoundException.class})
-    protected ApiError RTASEntityNotFoundException(RTASNotFoundException ex) {
-
-        ApiError apiError = ApiError.builder()
-                .message(ex.getMessage())
-                .status(HttpStatus.NOT_FOUND)
-                .type(ApiErrorType.BUSINESS)
-                .build();
-
-        return apiError;
-
-    }
+//    @ResponseBody
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    @ExceptionHandler({AreaNotFoundException.class})
+//    protected ApiError AreaNotFoundException(AreaNotFoundException ex) {
+//
+//        return ApiError.builder()
+//                .message(ex.getMessage())
+//                .type(ApiErrorType.BUSINESS)
+//                .status(HttpStatus.BAD_REQUEST)
+//                .build();
+//
+//    }
+//
+//    @ResponseBody
+//    @ResponseStatus(HttpStatus.NOT_FOUND)
+//    @ExceptionHandler({RuntimeException.class})
+//    protected ApiError RTAEntityNotFoundException(RuntimeException ex) {
+//
+//        ApiError apiError = ApiError.builder()
+//                .message(ex.getMessage())
+//                .status(HttpStatus.NOT_FOUND)
+//                .type(ApiErrorType.BUSINESS)
+//                .build();
+//        return apiError;
+//
+//    }
+//
+//    @ResponseBody
+//    @ResponseStatus(HttpStatus.NOT_FOUND)
+//    @ExceptionHandler({RTASNotFoundException.class})
+//    protected ApiError RTASEntityNotFoundException(RTASNotFoundException ex) {
+//
+//        ApiError apiError = ApiError.builder()
+//                .message(ex.getMessage())
+//                .status(HttpStatus.NOT_FOUND)
+//                .type(ApiErrorType.BUSINESS)
+//                .build();
+//
+//        return apiError;
+//
+//    }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody

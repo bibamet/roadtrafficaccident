@@ -1,16 +1,13 @@
 package com.example.roadtrafficaccident.exceptions;
 
-import lombok.Getter;
+import javax.persistence.EntityNotFoundException;
 
-public class AreaNotFoundException extends RuntimeException {
+public class AreaNotFoundException extends EntityNotFoundException {
 
-    @Getter
-    boolean badCoords;
-
-    public AreaNotFoundException(String area, boolean badCoords) {
+    public AreaNotFoundException(String area) {
 
         super(String.format("Указана некорректная область: %s", area));
-        this.badCoords = badCoords;
+        initCause(this);
 
     }
 

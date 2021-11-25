@@ -9,6 +9,6 @@
     <include file="v1.0/2021-11-10--01--init-db-schema.xml" relativeToChangelogFile="true"/>
     <include file="v1.0/2021-11-15--01--unique-constraint-rta.xml" relativeToChangelogFile="true"/>
     <include file="v1.0/2021-11-16--01--create-log-table.xml" relativeToChangelogFile="true"/>
-<!--    <include file="v1.0/2021-11-18&#45;&#45;01&#45;&#45;create-user-script.xml" relativeToChangelogFile="true"/>-->
+    <include file="v1.0/2021-11-18--01--create-user-script.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

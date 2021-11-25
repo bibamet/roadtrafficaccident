@@ -52,7 +52,7 @@ public class GeocoderAdapter {
         String responseBody = responseEntity.getBody();
 
         if (responseBody == null || responseEntity.getBody().contains("\"found\":\"0\"")) {
-            throw new AreaNotFoundException(area, true);
+            throw new AreaNotFoundException(area);
         }
 
         properties = new HashMap<>();
@@ -72,7 +72,7 @@ public class GeocoderAdapter {
             upperCorner = ((String) envelope.get("upperCorner")).split(" ");
 
         } catch (ParseException e) {
-            throw new AreaNotFoundException(area, false);
+            throw new AreaNotFoundException(area);
         }
 
         properties.put("lowerLongtitude", lowerCorner[0]);
@@ -104,7 +104,7 @@ public class GeocoderAdapter {
                 String.class);
 
         if (address.getBody() == null || address.getBody().contains("\"found\":\"0\"")) {
-            throw new AddressNotFoundException(longtitude, latitude, true);
+            throw new AddressNotFoundException(longtitude, latitude);
         }
 
         StringBuffer responseBody = new StringBuffer(address.getBody());
@@ -112,7 +112,7 @@ public class GeocoderAdapter {
         try {
             return addressFromJSON(responseBody);
         } catch (ParseException e) {
-            throw new AddressNotFoundException(longtitude, latitude, false);
+            throw new AddressNotFoundException(longtitude, latitude);
         }
 
     }
@@ -166,7 +166,7 @@ public class GeocoderAdapter {
             return components.stream().map(component -> component.get("name")).collect(Collectors.joining(", "));
 
         } else {
-            throw new AddressNotFoundException(longtitude, latitude, true);
+            throw new AddressNotFoundException(longtitude, latitude);
         }
 
     }
@@ -209,7 +209,7 @@ public class GeocoderAdapter {
             return envelope;
 
         } else {
-            throw new AreaNotFoundException(area, false);
+            throw new AreaNotFoundException(area);
         }
 
     }

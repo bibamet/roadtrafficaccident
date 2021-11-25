@@ -1,6 +1,8 @@
 package com.example.roadtrafficaccident.exceptions;
 
-public class RTASNotFoundException extends RuntimeException {
+import javax.persistence.EntityNotFoundException;
+
+public class RTASNotFoundException extends EntityNotFoundException {
 
     public RTASNotFoundException(Long numOfRTA) {
         super(String.format("Не найдено ДТП с номером авто: %d", numOfRTA));
