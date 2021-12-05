@@ -1,4 +1,4 @@
-package com.example.roadtrafficaccident.exceptionbody;
+package com.example.roadtrafficaccident.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,9 +11,7 @@ import org.springframework.http.HttpStatus;
 @NoArgsConstructor
 @Builder
 public class ApiError {
-
     private HttpStatus status;
     private String message;
     private ApiErrorType type;
-
 }

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 public class LogService {
 
     private final LogRepo logRepo;
-
     public void save(LogEntity log) {
         logRepo.save(log);
     }

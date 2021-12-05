@@ -1,14 +1,10 @@
-package com.example.roadtrafficaccident.exceptions;
+package com.example.roadtrafficaccident.exceptions.parentexception;
 
-import javax.persistence.EntityNotFoundException;
-
-public class AreaNotFoundException extends EntityNotFoundException {
+public class AreaNotFoundException extends ParentException {
 
     public AreaNotFoundException(String area) {
-
         super(String.format("Указана некорректная область: %s", area));
         initCause(this);
-
     }
 
 }

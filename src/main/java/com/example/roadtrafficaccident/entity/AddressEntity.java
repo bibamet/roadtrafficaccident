@@ -1,12 +1,15 @@
 package com.example.roadtrafficaccident.entity;
 
-
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.Builder;
 import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.UUID;
-
 
 @Entity(name = "address")
 @Getter
@@ -17,8 +20,6 @@ import java.util.UUID;
 public class AddressEntity {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_seq")
-//    @SequenceGenerator(name = "address_seq", sequenceName = "address_seq", allocationSize = 1)
     @GeneratedValue(generator = "uuid_gen")
     @GenericGenerator(name = "uuid_gen", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
@@ -28,9 +29,5 @@ public class AddressEntity {
     private Double latitude;
 
     private String addressView;
-
-//    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "address_id")
-//    List<RTAEntity> rta;
 
 }
