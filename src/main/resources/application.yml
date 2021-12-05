@@ -10,8 +10,6 @@ spring:
     change-log: 'classpath:db-migrations/changelog.xml'
     driver-class-name: org.postgresql.Driver
   jpa:
-    hibernate:
-      ddl-auto: update # убрать нахер
     show-sql: true
 internal:
   api:

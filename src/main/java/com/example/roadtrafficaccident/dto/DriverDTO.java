@@ -1,12 +1,11 @@
 package com.example.roadtrafficaccident.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -18,7 +17,7 @@ public class DriverDTO {
     private String category;
     private LocalDate license;
     private String numberOfCar;
-    private Long serial_license;
-    private Long number_license;
+    private Long serialLicense;
+    private Long numberLicense;
 
 }

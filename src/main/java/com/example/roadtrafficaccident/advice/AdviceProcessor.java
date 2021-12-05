@@ -1,10 +1,9 @@
 package com.example.roadtrafficaccident.advice;
 
 import com.example.roadtrafficaccident.entity.log.LogEntity;
-import com.example.roadtrafficaccident.exceptions.AddressNotFoundException;
-import com.example.roadtrafficaccident.exceptions.AreaNotFoundException;
-import com.example.roadtrafficaccident.exceptions.RTAEntityNotFoundException;
 import com.example.roadtrafficaccident.exceptions.RTASNotFoundException;
+import com.example.roadtrafficaccident.exceptions.WrongApiUrlException;
+import com.example.roadtrafficaccident.exceptions.parentexception.ParentException;
 import com.example.roadtrafficaccident.service.LogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +14,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
@@ -35,8 +36,7 @@ public class AdviceProcessor {
     @Around(value = "pointcut(inputArgs)")
     public Object doLog(ProceedingJoinPoint pjp, Object inputArgs) throws Throwable {
 
-        Optional<Object> result = Optional.ofNullable(null); // зачем?? опшенал и так с нулом внутри
-        Exception except = null; // аналогично убрать
+        Optional<Object> result;
         Signature sign = pjp.getSignature();
         LocalDateTime timestamp = LocalDateTime.now();
         String clientHost = httpServletRequest.getRemoteHost();
@@ -48,21 +48,15 @@ public class AdviceProcessor {
                 inputArgs);
         try {
             result = Optional.ofNullable(pjp.proceed());
-        } catch (DataIntegrityViolationException exception) {
-            saveLog(method, timestamp, System.currentTimeMillis() - startTime, result, exception.getRootCause(), clientHost);
-            log.debug("after executing {}. Exception: {}", method, exception);
-            throw exception;
-        } catch (ConstraintViolationException | AreaNotFoundException | AddressNotFoundException | RTAEntityNotFoundException | RTASNotFoundException exception) {
-            saveLog(method, timestamp, System.currentTimeMillis() - startTime, result, exception, clientHost);
+            saveLog(method, timestamp, System.currentTimeMillis() - startTime, result, null, clientHost);
+            log.debug("after executing {}. Returned value {}", method, result);
+            return result.isPresent() ? result.get() : null;
+        } catch (DataIntegrityViolationException | ConstraintViolationException | RTASNotFoundException | ParentException
+                | RestClientException | WrongApiUrlException exception) {
+            saveLog(method, timestamp, System.currentTimeMillis() - startTime, Optional.ofNullable(null), exception, clientHost);
             log.debug("after executing {}. Exception: {}", method, exception);
             throw exception;
         }
-        // у тебя куча блоков с одинаковой логикой для разных исключкний, если так и задумано сделай им всем единого наследнига и лови его либо вот так все в один catch
-
-        saveLog(method, timestamp, System.currentTimeMillis() - startTime, result, except, clientHost);
-        log.debug("after executing {}. Returned value {}", method, result);
-        return result.get(); // NPE?
-
     }
 
     private void saveLog(String method, LocalDateTime timeStamp, Long executionTime, Optional<Object> result, Throwable exception, String clientHost) {
