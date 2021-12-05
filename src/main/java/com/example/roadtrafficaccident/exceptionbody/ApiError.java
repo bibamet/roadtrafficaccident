@@ -17,3 +17,5 @@ public class ApiError {
     private ApiErrorType type;
 
 }
+
+// это дто, засунть в пакет с дто

@@ -13,4 +13,7 @@ public class AddressNotFoundException extends EntityNotFoundException {
 
     }
 
+    // это исключение из пакета javax, проверь что у тебя валидно работают обработчики потому что EFE - это про persistence, а твое исключение про рест взаимодейсвтие и бизнес логику
+    // как-то запутанно выходит
+
 }

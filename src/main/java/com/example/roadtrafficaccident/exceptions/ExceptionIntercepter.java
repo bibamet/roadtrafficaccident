@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+// комменты убрать
 @ControllerAdvice
 public class ExceptionIntercepter {
 

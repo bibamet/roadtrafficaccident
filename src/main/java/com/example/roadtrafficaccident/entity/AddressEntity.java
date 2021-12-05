@@ -8,6 +8,8 @@ import javax.persistence.*;
 import java.util.UUID;
 
 
+
+//убрать комменты
 @Entity(name = "address")
 @Getter
 @Setter

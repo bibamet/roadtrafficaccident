@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import java.util.*;
 
+//TODO удалить комменты, подключить checkstyle plugin
 @Service
 @RequiredArgsConstructor
 public class DriversAndCarsAdapter {
@@ -25,7 +26,7 @@ public class DriversAndCarsAdapter {
     public DriverDTO getDriversIdByNumberOfCar(String numberOfCar) {
 
 //        String uri = UriComponentsBuilder.fromUriString("http://localhost:42100/driversandcars/driverid/").path("/{numberOfCar}")
-//                .buildAndExpand(numberOfCar).toUriString();
+//                .buildAndExpand(numberOfCar).toUriString(); //
 
         String uri = UriComponentsBuilder.fromUriString(driverAndCarsUrl).path("/{numberOfCar}")
                 .buildAndExpand(numberOfCar).toUriString();

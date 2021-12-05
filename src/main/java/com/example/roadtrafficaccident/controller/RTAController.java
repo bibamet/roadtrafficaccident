@@ -32,7 +32,7 @@ public class RTAController {
 
     }
 
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.OK) // он и так 200 по умолчанию, это избыточно
     @PutMapping ("/address")
     public RtaDto updateAddress(@Valid @RequestBody UpdatingAddressDto info) {
         //возможно, надо добавить параметры для изменения адреса и номера дтп
@@ -42,8 +42,8 @@ public class RTAController {
 
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/numcar")
+    @ResponseStatus(HttpStatus.OK)// аналогично
+    @PutMapping("/numcar") // это другая сущност, вынести в отдельный контроллер
     public RtaDto updateNumCar(@Valid @RequestBody UpdatingNumCarDto updatingNumCarDto) {
 
         return roadTrafficAccidentService.updateNumCar(updatingNumCarDto.getNumberOfRta(),
@@ -52,7 +52,7 @@ public class RTAController {
 
     }
 
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.OK)// аналогично
     @PutMapping("/numrta")
     public List<RtaDto> changeNumCar(@Valid @RequestBody UpdatingNumRtaDto updatingNumRtaDto) {
 
@@ -61,8 +61,8 @@ public class RTAController {
 
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/guilty")
+    @ResponseStatus(HttpStatus.OK)// аналогично
+    @PutMapping("/guilty")// это другая сущност, вынести в отдельный контроллер
     public RtaDto setGuiltyAndPenalty(@Valid @RequestBody UpdatingGuiltyDto updatingGuiltyDto) {
 
         return roadTrafficAccidentService.setGuiltyAndPenalty(updatingGuiltyDto.getNumberOfRta(),
@@ -73,8 +73,8 @@ public class RTAController {
 
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/car")
+    @ResponseStatus(HttpStatus.OK)// аналогично
+    @GetMapping("/car") // это другая сущност, вынести в отдельный контроллер
     public List<RtaDto> getRtaByCar(@Valid @RequestBody GettingRtaByCar gettingRtaByCar) {
 
         return roadTrafficAccidentService.getByCar(gettingRtaByCar.getNumberOfCar(),
@@ -93,7 +93,7 @@ public class RTAController {
         var from = gettingRtaByArea.getFrom();
         var to = gettingRtaByArea.getTo();
         var ageCount = gettingRtaByArea.getAgeCount();
-
+// убрать всю бизнес логику на уровень сервисов, в контроллере только вызов сервиса оставить
         return String.format(message, geocode, from, from,
                 to, to,
                 ageCount == 0 ? "текущий год" : ageCount + " лет",

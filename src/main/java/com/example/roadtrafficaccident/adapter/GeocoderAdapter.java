@@ -39,7 +39,7 @@ public class GeocoderAdapter {
 
         Map<String, String> properties = coordsFromArea(area);
 
-        if (Objects.nonNull(properties)) return properties;
+        if (Objects.nonNull(properties)) return properties; // todo {}
 
         String uri = UriComponentsBuilder.fromUriString(geocoderUrl)
                 .queryParam("apikey", apiKey)
@@ -47,7 +47,7 @@ public class GeocoderAdapter {
                 .queryParam("format", "json")
                 .queryParam("geocode", area).build().toUriString();
 
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(uri, String.class);
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(uri, String.class); //todo если здесь вылетит исключение не будет дальнейше оьработки
 
         String responseBody = responseEntity.getBody();
 
@@ -72,10 +72,11 @@ public class GeocoderAdapter {
             upperCorner = ((String) envelope.get("upperCorner")).split(" ");
 
         } catch (ParseException e) {
-            throw new AreaNotFoundException(area);
+            throw new AreaNotFoundException(area); //красиво, правильно сделал но лучше засунуть месседж исключения чтоб можно было понять че именно произошло
+            //сейчас в случае ошибки не понятно на чьей стороне проблема, на твоей (например парсер кривой) или на стороге апи внешнего
         }
 
-        properties.put("lowerLongtitude", lowerCorner[0]);
+        properties.put("lowerLongtitude", lowerCorner[0]); // все стринги вынести в константы
         properties.put("upperLongtitude", upperCorner[0]);
 
         properties.put("lowerLatitude", lowerCorner[1]);

@@ -12,7 +12,7 @@ public enum ApiErrorType {
     SYSTEM;
 
     private ApiErrorType() {
-    }
+    } // юзлесс
 
 
 }

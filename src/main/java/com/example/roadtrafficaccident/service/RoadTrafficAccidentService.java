@@ -73,15 +73,11 @@ public class RoadTrafficAccidentService {
         //возможно, вставить обработку исключения при записи в БД
         RTAEntity savedRTA = rtaRepo.save(rtaEntity);
 
-        RtaDto rtaDto = rtaMapper.toRtaDto(savedRTA);
-
-        return rtaDto;
+        return rtaMapper.toRtaDto(savedRTA);
 
     }
 
-    public RtaDto updateAddress(Long numberOfRTA
-            , String numberOfCar
-            , AddressDto address) {
+    public RtaDto updateAddress(Long numberOfRTA, String numberOfCar, AddressDto address) {
 
         RTAEntity rtaEntity = rtaRepo.getByNumberOfCarAndNumberOfRta(numberOfCar, numberOfRTA)
                 .orElseThrow(() -> new RTAEntityNotFoundException(numberOfRTA, numberOfCar));
@@ -99,6 +95,8 @@ public class RoadTrafficAccidentService {
         return rtaMapper.toRtaDto(savedRta);
     }
 
+
+    //у тебя два обращения в базу, где транзакция?
     public RtaDto updateNumCar(Long numberOfRTA,
             String oldCarNumber, String newCarNumber) {
 

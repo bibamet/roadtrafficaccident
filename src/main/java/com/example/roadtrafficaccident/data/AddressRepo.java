@@ -7,8 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+
+// пробелы не читабельно пиздец
 @Repository
 public interface AddressRepo extends JpaRepository<AddressEntity, Long> {
+
+    // лучше сделай query , метод не читабелен
     List<AddressEntity> findByLongtitudeGreaterThanEqualAndLongtitudeLessThanEqualAndLatitudeGreaterThanEqualAndLatitudeLessThanEqual(Double lowerLongtitude,
                                                                                                                                       Double upperLongtitude,
                                                                                                                                       Double lowerLatitude,

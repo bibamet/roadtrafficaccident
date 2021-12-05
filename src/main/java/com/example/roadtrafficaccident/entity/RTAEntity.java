@@ -40,6 +40,6 @@ public class RTAEntity {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
-    AddressEntity address;
+    AddressEntity address; // модификаторы доступа?
 
 }
